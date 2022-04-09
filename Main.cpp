@@ -26,7 +26,7 @@ int main(){
 			case 3:	s.editdata(); break;
 			case 4:	//eliminar(); break;
 			case 0: break;
-			default: break; //void default1(); break;
+			default: break;
 		}	
 	}while(op!=0);
 	

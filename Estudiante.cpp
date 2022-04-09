@@ -1,12 +1,10 @@
 #include<iostream>
 #include<conio.h>
 #include <string.h> 
-//#include "Conexion_class.cpp"
+#include "archivos.cpp"
 
 using namespace std;
-const char *nombre_archivo = "archivo.txt";
-FILE* archivo;
-
+Archivo ar;
 
 class Estudiante{
 			// atributos
@@ -19,11 +17,14 @@ class Estudiante{
 				
 			// metodos
 	public : 
+		Estudiante(){
+			
+		}
 		
 	void getdata(){
 		system("cls");
 		Estudiante s;
-		archivo = fopen(nombre_archivo,"ab");
+		ar.agregar_archivo();
 		string nombre2, apellido2,direccion2,codigo2;
 		fflush(stdin);
 		cout<<"Ingrese el nombre del estudiante: ";
@@ -40,15 +41,15 @@ class Estudiante{
 		strcpy(s.direccion,direccion2.c_str());
 		cout<<"Ingrese el telefono del estudiante: ";
 		cin>>s.telefono;
-		fwrite(&s,sizeof(s),1,archivo);
-		fclose(archivo);
+		fwrite(&s,sizeof(s),1,ar.archivo);
+		ar.cerrar_archivo();
 	}
 	
 	void showdata(){
 		system("cls");
 		Estudiante s;
-		archivo = fopen(nombre_archivo,"rb");
-		fread(&s,sizeof(s),1,archivo);
+		ar.leer_archivo();
+		fread(&s,sizeof(s),1,ar.archivo);
 		int id=0;
 		do{
 			cout<<"____________________________________"<<endl;
@@ -59,9 +60,9 @@ class Estudiante{
 			cout<<"Direccion: "<<s.direccion<<endl;
 			cout<<"Telefono: "<<s.telefono<<endl;
 			id++;
-			fread(&s,sizeof(s),1,archivo);		
-		}while(!feof(archivo));
-		fclose(archivo);
+			fread(&s,sizeof(s),1,ar.archivo);		
+		}while(!feof(ar.archivo));
+		ar.cerrar_archivo();
 		getch();
 	}
 	
@@ -71,11 +72,13 @@ class Estudiante{
 		int id;
 		string name,lastname,adress,cod;
 		int tel;
-		archivo = fopen(nombre_archivo,"r+b");
+		//archivo = fopen(nombre_archivo,"r+b");
 		cout<<"Ingrese el id para modificar: ";
 		cin>>id;
-		fseek(archivo,id *sizeof(s),SEEK_SET);
-		
+		fseek(ar.archivo, id*sizeof(s),SEEK_SET);
+		cout<<"Nombres: "<<s.nombres<<endl;
+		getch();
+		/*
 		fflush(stdin);
 		cout<<"Ingrese el nuevo nombre: ";
 		getline(cin,name);
@@ -92,8 +95,10 @@ class Estudiante{
 		getline(cin,adress);
 		strcpy(s.nombres,adress.c_str());
 		fwrite(&s,sizeof(s),1,archivo);
-		fclose(archivo);
+		*/
+		ar.cerrar_archivo();
 	}
+	
 	//Metdo set
 	void setname(string n){Estudiante s; strcpy(s.nombres,n.c_str());}
 	void setlastname(string ap){Estudiante s; strcpy(s.apellidos,ap.c_str());}
